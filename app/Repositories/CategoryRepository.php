@@ -49,7 +49,7 @@ class CategoryRepository implements CategoryInterface
             $category = $id ? Category::find($id) : new Category;
 
             // Check the category
-            if($id && !$category) return $this->error("No se encontro una categotía con ID $id", 404);
+            if($id && !$category) return $this->error("No se encontro una categoría con ID $id", 404);
 
             $category->name = $request->name;
 
@@ -74,7 +74,7 @@ class CategoryRepository implements CategoryInterface
             $category = Category::find($id);
 
             // Check the category
-            if(!$category) return $this->error("No se encontro una categotía con ID $id", 404);
+            if(!$category) return $this->error("No se encontro una categoría con ID $id", 404);
 
             // Delete the category
             $category->delete();

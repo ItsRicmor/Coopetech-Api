@@ -2,31 +2,65 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Mockery;
 use Tests\TestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 use App\Models\Category;
-use App\Interfaces\CategoryInterface;
-use App\Http\Requests\CategoryRequest;
-use App\Repositories\CategoryRepository;
 
 
 class CategoryTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function testMustEnterName()
+    use RefreshDatabase;
+
+    function testGetAllCategoriesCorrectly()
     {
-        $this->json('POST', 'api/categories')
+        $this->get('/api/categories')
+            ->assertOk()
+            ->assertJson([
+                "message" => "Todas las categorías",
+                "error" => false,
+                "results" => [],
+            ]);
+    }
+
+    public function testGetCategoryByIdShouldReturnNotFoundWhenIdDoesNotExistInDatabase()
+    {
+        $id = 1;
+        $this->get("/api/categories/$id")
+            ->assertNotFound()
+            ->assertJson([
+                "message" => "No se encontro una categotía con ID $id",
+                "error" => true,
+                "results" => null,
+            ]);
+    }
+
+    public function testGetCategoryByIdShouldReturnTheExpectedCategoryCorrectly()
+    {
+        $category = Category::factory()->create();
+        $category->save();
+        $id = $category->id;
+
+        $this->get("/api/categories/$id")
+            ->assertOk()
+            ->assertJson([
+                "message" => "Detalles de la categoría",
+                "error" => false,
+                "results" => [
+                    "id" => $id,
+                    "name" => $category->name,
+                ],
+            ]);
+    }
+
+    public function testCreateCategoryShouldReturnValidationErrorsWhenRequestDataIsWrong()
+    {
+        $this->postJson('api/categories', [])
             ->assertStatus(422)
             ->assertJson([
                 "message" => "Error de validación",
                 "error" => true,
-                "code" => 422,
                 "results" => [
                     "name" => [
                         "El nombre es obligatorio"
@@ -35,18 +69,92 @@ class CategoryTest extends TestCase
             ]);
     }
 
-    public function testCreateSuccessfully()
+    public function testCreateCategoryShouldSaveACategoryCorrectly()
     {
-        $category = Category::factory()->make();
-        $repository = Mockery::mock(CategoryRepository::class);
+        $name = "Test name";
+        $this->postJson('/api/categories/', ["name" => $name])
+            ->assertCreated()
+            ->assertJson([
+                "message" => "Categoría creada",
+                "error" => false,
+                "results" => [
+                    "name" => $name,
+                ],
+            ]);
+    }
 
-        $repository->shouldReceive('requestCategory')
-            ->with(new CategoryRequest($category->toArray()))
-            ->once()
-            ->andReturn($category);
+    public function testUpdateCategoryShouldReturnNotFoundWhenIdDoesNotExistInDatabase()
+    {
+        $this->putJson('/api/categories/1', ["name" => "test name"])
+            ->assertNotFound()
+            ->assertJson([
+                "message" => "No se encontro una categoría con ID 1",
+                "error" => true,
+                "results" => null,
+            ]);
+    }
 
-        $this->app->instance(CategoryInterface::class, $repository);
+    public function testUpdateCategoryShouldReturnValidationErrorsWhenRequestDataIsWrong()
+    {
+        $this->putJson('/api/categories/1', [])
+            ->assertStatus(422)
+            ->assertJson([
+                "message" => "Error de validación",
+                "error" => true,
+                "results" => [
+                    "name" => [
+                        "El nombre es obligatorio"
+                    ]
+                ]
+            ]);
+    }
 
-        $repository->requestCategory(new CategoryRequest($category->toArray()));
+    public function testUpdateCategoryShouldUpdateACategoryCorrectly()
+    {
+        $category = Category::factory()->create();
+        $category->save();
+        $id = $category->id;
+
+        $name = "new test name";
+        $this->putJson("/api/categories/$id", ["name" => $name])
+            ->assertOk()
+            ->assertJson([
+                "message" => "Categoría actualizada",
+                "error" => false,
+                "results" => [
+                    "id" => $id,
+                    "name" => $name,
+                ],
+            ]);
+    }
+
+    public function testDeleteCategoryShouldReturnNotFoundWhenIdDoesNotExistInDatabase()
+    {
+       $this->deleteJson('/api/categories/1')
+            ->assertNotFound()
+            ->assertJson([
+                "message" => "No se encontro una categoría con ID 1",
+                "error" => true,
+                "results" => null,
+            ]);
+    }
+
+    public function testDeleteCategoryShouldRemoveACategoryCorrectly()
+    {
+        $category = Category::factory()->create();
+        $category->save();
+        $id = $category->id;
+
+        $name = "new test name";
+        $this->deleteJson("/api/categories/$id")
+            ->assertOk()
+            ->assertJson([
+                "message" => "Categoría eliminada",
+                "error" => false,
+                "results" => [
+                    "id" => $id,
+                    "name" => $category->name,
+                ],
+            ]);
     }
 }
