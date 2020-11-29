@@ -25,12 +25,11 @@ class CategoryRepository implements CategoryInterface
         }
     }
 
-    public function getCategoryById($id)
+    public function getCategoryById(int $id)
     {
         try {
             $category = Category::find($id);
 
-            // Check the category
             if(!$category) return $this->error("No se encontro una categotía con ID $id", 404);
 
             return $this->success("Detalles de la categoría", new CategoryResource($category));
@@ -39,44 +38,47 @@ class CategoryRepository implements CategoryInterface
         }
     }
 
-    public function requestCategory(CategoryRequest $request, $id = null)
+    public function createCategory(CategoryRequest $request)
     {
         DB::beginTransaction();
         try {
-            // If category exists when we find it
-            // Then update the category
-            // Else create the new one.
-            $category = $id ? Category::find($id) : new Category;
-
-            // Check the category
-            if($id && !$category) return $this->error("No se encontro una categoría con ID $id", 404);
-
-            $category->name = $request->name;
-
-            // Save the user
-            $category->save();
-
+            $category = Category::create($request->all());
             DB::commit();
-            return $this->success(
-                $id ? "Categoría actualizada"
-                    : "Categoría creada",
-                $category, $id ? 200 : 201);
+            return $this->success("Categoría creada", $category,  201);
         } catch(\Exception $e) {
             DB::rollBack();
             return $this->error($e->getMessage(), $e->getCode());
         }
     }
 
-    public function deleteCategory($id)
+    public function updateCategory(CategoryRequest $request, int $id)
     {
         DB::beginTransaction();
         try {
             $category = Category::find($id);
 
-            // Check the category
+            if($id && !$category) return $this->error("No se encontro una categoría con ID $id", 404);
+
+            $category->name = $request->name;
+
+            $category->save();
+
+            DB::commit();
+            return $this->success("Categoría actualizada", $category, 200);
+        } catch(\Exception $e) {
+            DB::rollBack();
+            return $this->error($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function deleteCategory(int $id)
+    {
+        DB::beginTransaction();
+        try {
+            $category = Category::find($id);
+
             if(!$category) return $this->error("No se encontro una categoría con ID $id", 404);
 
-            // Delete the category
             $category->delete();
 
             DB::commit();
