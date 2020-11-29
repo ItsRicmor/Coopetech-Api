@@ -22,19 +22,30 @@ interface CategoryInterface
      * @method  GET api/categories/{id}
      * @access  public
      */
-    public function getCategoryById($id);
+    public function getCategoryById(int $id);
 
     /**
      * Create | Update category
      *
-     * @param   \App\Http\Requests\CategoryRequest   $request
-     * @param   integer                              $id
+     * @param CategoryRequest $request
      *
      * @method  POST    api/categories       For Create
-     * @method  PUT     api/categories/{id}  For Update
      * @access  public
      */
-    public function requestCategory(CategoryRequest $request, $id = null);
+    public function createCategory(CategoryRequest $request);
+
+    /**
+     * Create | Update category
+     *
+     * @param CategoryRequest $request
+     * @param Integer $id
+     *
+     * @method  PUT     api/categories/{
+     * id
+     * }  For Update
+     * @access  public
+     */
+    public function updateCategory(CategoryRequest $request, int $id);
 
     /**
      * Delete category
@@ -44,5 +55,5 @@ interface CategoryInterface
      * @method  DELETE  api/categories/{id}
      * @access  public
      */
-    public function deleteCategory($id);
+    public function deleteCategory(int $id);
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Interfaces\CategoryInterface;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -22,7 +23,7 @@ class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -32,21 +33,21 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\CategoryRequest  $request
-     * @return \Illuminate\Http\Response
+     * @param  CategoryRequest  $request
+     * @return Response
      */
     public function store(CategoryRequest $request)
     {
-        return $this->categoryInterface->requestCategory($request);
+        return $this->categoryInterface->createCategory($request);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return Response
      */
-    public function show($id)
+    public function show(int $id)
     {
         return $this->categoryInterface->getCategoryById($id);
     }
@@ -54,22 +55,22 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\CategoryRequest  $request
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param CategoryRequest $request
+     * @param Integer $id
+     * @return Response
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, int $id)
     {
-        return $this->categoryInterface->requestCategory($request, $id);
+        return $this->categoryInterface->updateCategory($request, $id);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Category  $category
-     * @return \Illuminate\Http\Response
+     * @param Integer $id
+     * @return Response
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
         return $this->categoryInterface->deleteCategory($id);
     }
