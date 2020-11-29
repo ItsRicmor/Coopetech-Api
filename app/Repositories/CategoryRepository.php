@@ -7,6 +7,8 @@ use App\Interfaces\CategoryInterface;
 use App\Traits\ResponseAPI;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
+use App\Http\Resources\CategoryCollection;
+use App\Http\Resources\Category AS CategoryResource;
 
 class CategoryRepository implements CategoryInterface
 {
@@ -17,7 +19,7 @@ class CategoryRepository implements CategoryInterface
     {
         try {
             $categories = Category::all();
-            return $this->success("Todas las categorías", $categories);
+            return $this->success("Todas las categorías", new CategoryCollection($categories));
         } catch(\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -31,7 +33,7 @@ class CategoryRepository implements CategoryInterface
             // Check the category
             if(!$category) return $this->error("No se encontro una categotía con ID $id", 404);
 
-            return $this->success("Detalles de la categoría", $category);
+            return $this->success("Detalles de la categoría", new CategoryResource($category));
         } catch(\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
         }
@@ -78,7 +80,7 @@ class CategoryRepository implements CategoryInterface
             $category->delete();
 
             DB::commit();
-            return $this->success("Categoría eliminada", $category);
+            return $this->success("Categoría eliminada",  new CategoryResource($category));
         } catch(\Exception $e) {
             DB::rollBack();
             return $this->error($e->getMessage(), $e->getCode());

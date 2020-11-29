@@ -31,6 +31,7 @@ trait ResponseAPI
                 'message' => $message,
                 'error' => true,
                 'code' => $statusCode,
+                'results' => $data
             ], $statusCode);
         }
     }
@@ -50,11 +51,13 @@ trait ResponseAPI
     /**
      * Send any error response
      *
-     * @param   string          $message
-     * @param   integer         $statusCode
+     * @param string $message
+     * @param integer $statusCode
+     * @param null $data
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function error($message, $statusCode = 500)
+    public function error($message, $statusCode = 500, $data = null)
     {
-        return $this->coreResponse($message, null, $statusCode, false);
+        return $this->coreResponse($message, $data, $statusCode, false);
     }
 }
