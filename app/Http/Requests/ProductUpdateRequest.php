@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use App\Traits\ResponseAPI;
 
-class ProductRequest extends FormRequest
+class ProductUpdateRequest extends FormRequest
 {
     use ResponseAPI;
 
@@ -29,7 +29,6 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|min:10|string|unique:products,id',
             'description' => 'required|max:255|min:5|string|unique:products,description',
             'quantity' => 'required|numeric|min:0|',
             'price' => 'required|numeric|min:0',
@@ -41,7 +40,6 @@ class ProductRequest extends FormRequest
     public function messages()
     {
         return [
-            'id.required' => 'El codigo del producto es obligatorio',
             'id.min' => 'El codigo del producto debe ser mayor o igual a 10 carácteres',
             'id.max' => 'El codigo del producto debe ser menor o igual a 30 carácteres',
             'description.required' => 'La descripción es obligatoria',

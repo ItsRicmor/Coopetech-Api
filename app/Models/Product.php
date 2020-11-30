@@ -11,6 +11,21 @@ class Product extends Model
 
     public $incrementing = false;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'id',
+        'description',
+        'quantity',
+        'price',
+        'brand',
+        'category_id'
+    ];
+
+
     public function category()
     {
         return $this->belongsTo('App\Models\Category');

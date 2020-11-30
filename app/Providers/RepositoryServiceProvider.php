@@ -12,8 +12,13 @@ class RepositoryServiceProvider extends ServiceProvider
         // You must place Interface in first place
         // If you dont, the Repository will not get readed.
         $this->app->bind(
-            'App\Interfaces\CategoryInterface',
-            'App\Repositories\CategoryRepository'
+            'App\Interfaces\CategoryRepository',
+            'App\Repositories\CategoryRepositoryImp'
+        );
+
+        $this->app->bind(
+            'App\Interfaces\ProductRepository',
+            'App\Repositories\ProductRepositoryImp'
         );
     }
 }

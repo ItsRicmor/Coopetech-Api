@@ -15,12 +15,14 @@ class CategoryTest extends TestCase
 
     function testGetAllCategoriesCorrectly()
     {
+        $category = Category::factory()->create();
+        $category->save();
         $this->get('/api/categories')
             ->assertOk()
             ->assertJson([
                 "message" => "Todas las categorías",
                 "error" => false,
-                "results" => [],
+                "results" => [$category->toArray()],
             ]);
     }
 
@@ -145,7 +147,6 @@ class CategoryTest extends TestCase
         $category->save();
         $id = $category->id;
 
-        $name = "new test name";
         $this->deleteJson("/api/categories/$id")
             ->assertOk()
             ->assertJson([

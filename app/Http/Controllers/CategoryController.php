@@ -3,20 +3,21 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
-use App\Interfaces\CategoryInterface;
+use App\Interfaces\CategoryRepository;
 use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
 
-    protected $categoryInterface;
+    protected $repository;
 
     /**
      * Create a new constructor for this controller
+     * @param CategoryRepository $categoryRepository
      */
-    public function __construct(CategoryInterface $categoryInterface)
+    public function __construct(CategoryRepository $categoryRepository)
     {
-        $this->categoryInterface = $categoryInterface;
+        $this->repository = $categoryRepository;
     }
 
 
@@ -27,7 +28,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return $this->categoryInterface->getAllCategories();
+        return $this->repository->getAllCategories();
     }
 
     /**
@@ -38,7 +39,7 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        return $this->categoryInterface->createCategory($request);
+        return $this->repository->createCategory($request);
     }
 
     /**
@@ -49,7 +50,7 @@ class CategoryController extends Controller
      */
     public function show(int $id)
     {
-        return $this->categoryInterface->getCategoryById($id);
+        return $this->repository->getCategoryById($id);
     }
 
     /**
@@ -61,7 +62,7 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, int $id)
     {
-        return $this->categoryInterface->updateCategory($request, $id);
+        return $this->repository->updateCategory($request, $id);
     }
 
     /**
@@ -72,6 +73,6 @@ class CategoryController extends Controller
      */
     public function destroy(int $id)
     {
-        return $this->categoryInterface->deleteCategory($id);
+        return $this->repository->deleteCategory($id);
     }
 }

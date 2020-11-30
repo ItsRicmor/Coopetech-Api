@@ -4,12 +4,12 @@ namespace App\Interfaces;
 
 use App\Http\Requests\CategoryRequest;
 
-interface CategoryInterface
+interface CategoryRepository
 {
     /**
      * Get all categories
      *
-     * @method  GET api/categories
+     * @method  GET api/categories For Get
      * @access  public
      */
     public function getAllCategories();
@@ -19,13 +19,13 @@ interface CategoryInterface
      *
      * @param   integer     $id
      *
-     * @method  GET api/categories/{id}
+     * @method  GET api/categories/{id} For Get By Id
      * @access  public
      */
     public function getCategoryById(int $id);
 
     /**
-     * Create | Update category
+     * Create category
      *
      * @param CategoryRequest $request
      *
@@ -35,14 +35,12 @@ interface CategoryInterface
     public function createCategory(CategoryRequest $request);
 
     /**
-     * Create | Update category
+     * Update category
      *
      * @param CategoryRequest $request
      * @param Integer $id
      *
-     * @method  PUT     api/categories/{
-     * id
-     * }  For Update
+     * @method  PUT     api/categories/{id}  For Update
      * @access  public
      */
     public function updateCategory(CategoryRequest $request, int $id);
@@ -52,7 +50,7 @@ interface CategoryInterface
      *
      * @param   integer     $id
      *
-     * @method  DELETE  api/categories/{id}
+     * @method  DELETE  api/categories/{id} For Delete
      * @access  public
      */
     public function deleteCategory(int $id);
