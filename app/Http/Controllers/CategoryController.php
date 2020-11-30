@@ -25,6 +25,10 @@ class CategoryController extends Controller
      * Display a listing of the resource.
      *
      * @return Response
+     * @OA\Get(
+     *     path="/projects",
+     *     @OA\Response(response="200", description="Display a listing of projects.")
+     * )
      */
     public function index()
     {
