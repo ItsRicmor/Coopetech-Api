@@ -20,6 +20,7 @@ class CreateProductsTable extends Migration
             $table->double('price')->nullable(false)->min(0.0);
             $table->string('brand')->nullable(false);
             $table->foreignId('category_id')->constrained();
+            $table->primary('id');
             $table->timestamps();
         });
     }

@@ -40,8 +40,6 @@ class ProductUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            'id.min' => 'El codigo del producto debe ser mayor o igual a 10 carácteres',
-            'id.max' => 'El codigo del producto debe ser menor o igual a 30 carácteres',
             'description.required' => 'La descripción es obligatoria',
             'description.max' => 'La descripción es muy larga, debe ser menor o igual a 255 carácteres',
             'description.unique' => 'Ya existe un producto con esa descripción',
