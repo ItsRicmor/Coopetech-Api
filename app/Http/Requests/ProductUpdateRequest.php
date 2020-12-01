@@ -56,7 +56,7 @@ class ProductUpdateRequest extends FormRequest
             'brand.max' => 'La marca es muy larga, debe ser como máximo de 100 carácteres',
             'category_id.required' => 'El id de la categoría es obligatorio',
             'category_id.numeric' => 'El id de la categoría debe ser un número',
-            'category_id.exists' => 'La categoria con el id :category_id, no existe'
+            'category_id.exists' => 'La categoria no existe'
         ];
     }
 

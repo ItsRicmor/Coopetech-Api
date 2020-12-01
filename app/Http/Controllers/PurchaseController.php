@@ -2,85 +2,76 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Purchase;
-use Illuminate\Http\Request;
-use App\Http;
+use App\Interfaces\PurchaseRepository;
+use App\Http\Requests\PurchaseRequest;
+use Illuminate\Http\Response;
 
 class PurchaseController extends Controller
 {
+    protected $repository;
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * Create a new constructor for this controller
+     * @param PurchaseRepository $purchaseRepository
      */
-    public function index()
+    public function __construct(PurchaseRepository $purchaseRepository)
     {
-        //
+        $this->repository = $purchaseRepository;
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function create()
+    public function index()
     {
-        //
+        return $this->repository->getAllPurchases();
     }
+
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  PurchaseRequest  $request
+     * @return Response
      */
-    public function store(Request $request)
+    public function store(PurchaseRequest $request)
     {
-        //
+        return $this->repository->createPurchase($request);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Purchase  $purchase
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return Response
      */
-    public function show(Purchase $purchase)
+    public function show(int $id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Purchase  $purchase
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Purchase $purchase)
-    {
-        //
+        return $this->repository->getPurchaseById($id);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Purchase  $purchase
-     * @return \Illuminate\Http\Response
+     * @param  PurchaseRequest  $request
+     * @param  int  $id
+     * @return Response
      */
-    public function update(Request $request, Purchase $purchase)
+    public function update(PurchaseRequest $request, int $id)
     {
-        //
+        return $this->repository->updatePurchase($request);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Purchase  $purchase
-     * @return \Illuminate\Http\Response
+     * @param  int  $id
+     * @return Response
      */
-    public function destroy(Purchase $purchase)
+    public function destroy(int $id)
     {
-        //
+        return $this->repository->deletePurchase($id);
     }
 }
