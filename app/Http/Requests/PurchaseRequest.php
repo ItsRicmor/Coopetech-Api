@@ -29,9 +29,9 @@ class PurchaseRequest extends FormRequest
     {
         return [
             'description' => 'required|max:255|min:10|string',
-            'quantity' => 'required|numeric|min:1|',
+            'quantity' => 'required|numeric|min:1',
             'total' => 'required|numeric|min:1',
-            'product_id' => 'required|numeric|exists:products,id'
+            'product_id' => 'required|string|exists:products,id'
         ];
     }
 

@@ -61,7 +61,6 @@ class PurchaseRepositoryImp implements PurchaseRepository
 
             $purchase->description = $request->description;
             $purchase->quantity = $request->quantity;
-            $purchase->price = $request->price;
             $purchase->total = $request->total;
             $purchase->product_id = $request->product_id;
 

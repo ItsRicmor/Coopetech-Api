@@ -83,7 +83,7 @@ class ProductTest extends TestCase
             ]);
     }
 
-    public function testCreateProductShouldSaveACategoryCorrectly()
+    public function testCreateProductShouldSaveAProductCorrectly()
     {
         $category = Category::factory()->create();
         $category->save();
@@ -152,7 +152,7 @@ class ProductTest extends TestCase
             ]);
     }
 
-    public function testUpdateProductShouldUpdateACategoryCorrectly()
+    public function testUpdateProductShouldUpdateAPurchaseCorrectly()
     {
         $category = Category::factory()->create();
         $category->save();
@@ -194,7 +194,7 @@ class ProductTest extends TestCase
             ]);
     }
 
-    public function testDeleteCategoryShouldRemoveACategoryCorrectly()
+    public function testDeleteProductShouldRemoveAProductCorrectly()
     {
         $product = Product::factory()->create();
         $product->save();
