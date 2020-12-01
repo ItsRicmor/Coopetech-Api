@@ -89,7 +89,7 @@ class PurchaseTest extends TestCase
         $this->postJson('/api/purchases', $purchase)
             ->assertCreated()
             ->assertJson([
-                "message" => "Producto creado",
+                "message" => "Compra creada",
                 "error" => false,
                 "results" => $purchase,
             ]);

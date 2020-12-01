@@ -3,6 +3,7 @@
 
 namespace App\Repositories;
 
+use App\Models\Product;
 use App\Models\Purchase;
 use App\Traits\ResponseAPI;
 use Illuminate\Support\Facades\DB;
@@ -43,8 +44,13 @@ class PurchaseRepositoryImp implements PurchaseRepository
         DB::beginTransaction();
         try {
             $purchase = Purchase::create($request->all());
+            $product = Product::find($purchase->product_id);
+
+            $product->quantity += $purchase->quantity;
+            $product->save();
+
             DB::commit();
-            return $this->success("Producto creado", new PurchaseResource($purchase),  201);
+            return $this->success("Compra creada", new PurchaseResource($purchase),  201);
         } catch(\Exception $e) {
             DB::rollBack();
             return $this->error($e->getMessage(), $e->getCode());
