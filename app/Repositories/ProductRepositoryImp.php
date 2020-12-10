@@ -21,7 +21,7 @@ class ProductRepositoryImp implements ProductRepository
     public function getAllProducts()
     {
         try {
-            $products = Product::all();
+            $products = Product::with('category')->get();
             return $this->success("Todos los productos", new ProductCollection($products));
         } catch(\Exception $e) {
             return $this->error($e->getMessage(), $e->getCode());
@@ -31,7 +31,7 @@ class ProductRepositoryImp implements ProductRepository
     public function getProductById(string $id)
     {
         try {
-            $product = Product::find($id);
+            $product = Product::with('category')->find($id);
 
             if(!$product) return $this->error("No se encontro un producto con ID $id", 404);
 
@@ -46,6 +46,7 @@ class ProductRepositoryImp implements ProductRepository
         DB::beginTransaction();
         try {
             $product = Product::create($request->all());
+            $product->load('category');
             DB::commit();
             return $this->success("Producto creado", new ProductResource($product),  201);
         } catch(\Exception $e) {
@@ -69,6 +70,8 @@ class ProductRepositoryImp implements ProductRepository
             $product->category_id = $request->category_id;
 
             $product->save();
+
+            $product->load('category');
 
             DB::commit();
             return $this->success("Producto actualizado", new ProductResource($product), 200);

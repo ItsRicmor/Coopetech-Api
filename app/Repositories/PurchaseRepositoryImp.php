@@ -44,10 +44,8 @@ class PurchaseRepositoryImp implements PurchaseRepository
         DB::beginTransaction();
         try {
             $purchase = Purchase::create($request->all());
-            $product = Product::find($purchase->product_id);
 
-            $product->quantity += $purchase->quantity;
-            $product->save();
+            $this->increaseProductStock($purchase);
 
             DB::commit();
             return $this->success("Compra creada", new PurchaseResource($purchase),  201);
@@ -96,5 +94,15 @@ class PurchaseRepositoryImp implements PurchaseRepository
             DB::rollBack();
             return $this->error($e->getMessage(), $e->getCode());
         }
+    }
+
+    /**
+     * @param $purchase
+     */
+    protected function increaseProductStock($purchase): void
+    {
+        $product = Product::find($purchase->product_id);
+        $product->quantity += $purchase->quantity;
+        $product->save();
     }
 }
