@@ -32,7 +32,7 @@ class ProductUpdateRequest extends FormRequest
             'description' => 'required|max:255|min:5|string|unique:products,description',
             'quantity' => 'required|numeric|min:0|',
             'price' => 'required|numeric|min:0',
-            'brand' => 'required|string|max:100|min:5',
+            'brand_id' => 'required|numeric|exists:brands,id',
             'category_id' => 'required|numeric|exists:categories,id'
         ];
     }
@@ -50,10 +50,9 @@ class ProductUpdateRequest extends FormRequest
             'price.required' => 'El precio es obligatorio',
             'price.numeric' => 'El precio debe ser un número valido',
             'price.min' => 'El precio no puede ser negativo',
-            'brand.required' => 'La marca es obligatoria',
-            'brand.string' => 'La marca debe ser formada por carácteres',
-            'brand.min' => 'La marca es muy corta, debe ser de almenos 5 carácteres',
-            'brand.max' => 'La marca es muy larga, debe ser como máximo de 100 carácteres',
+            'brand_id.required' => 'El id de la marca es obligatoria',
+            'brand_id.numeric' => 'El id de la marca debe ser un número',
+            'brand_id.exists' => 'La marca no existe',
             'category_id.required' => 'El id de la categoría es obligatorio',
             'category_id.numeric' => 'El id de la categoría debe ser un número',
             'category_id.exists' => 'La categoria no existe'

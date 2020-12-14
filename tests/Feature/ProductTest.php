@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -38,7 +39,7 @@ class ProductTest extends TestCase
             ]);
     }
 
-    public function testGetCategoryByIdShouldReturnTheExpectedCategoryCorrectly()
+    public function testGetProductByIdShouldReturnTheExpectedProductCorrectly()
     {
         $product = Product::factory()->create();
         $product->save();
@@ -73,8 +74,8 @@ class ProductTest extends TestCase
                     "price" => [
                         "El precio es obligatorio"
                     ],
-                    "brand" => [
-                        "La marca es obligatoria"
+                    "brand_id" => [
+                        "El id de la marca es obligatoria"
                     ],
                     "category_id" => [
                         "El id de la categoría es obligatorio"
@@ -87,12 +88,14 @@ class ProductTest extends TestCase
     {
         $category = Category::factory()->create();
         $category->save();
+        $brand = Brand::factory()->create();
+        $brand->save();
         $product = [
             "id" => "f7edb97e-ff65-3945-899d-29e41a52f3f5",
             "description" => "Prof. Ottilie Schaefer I",
             "quantity" => 5,
             "price" => 1000.0,
-            "brand" => "Stehr, Reichert and Weber",
+            "brand_id" => $brand->id,
             "category_id" => $category->id
         ];
         $this->postJson('/api/products', $product)
@@ -108,12 +111,14 @@ class ProductTest extends TestCase
     {
         $category = Category::factory()->create();
         $category->save();
+        $brand = Brand::factory()->create();
+        $brand->save();
         $product = [
             "id" => "f7edb97e-ff65-3945-899d-29e41a52f3f5",
             "description" => "Prof. Ottilie Schaefer I",
             "quantity" => 5,
             "price" => 1000.0,
-            "brand" => "Stehr, Reichert and Weber",
+            "brand_id" => $brand->id,
             "category_id" => $category->id
         ];
         $this->putJson('/api/products/123AD', $product)
@@ -142,8 +147,8 @@ class ProductTest extends TestCase
                     "price" => [
                         "El precio es obligatorio"
                     ],
-                    "brand" => [
-                        "La marca es obligatoria"
+                    "brand_id" => [
+                        "El id de la marca es obligatoria"
                     ],
                     "category_id" => [
                         "El id de la categoría es obligatorio"
@@ -156,13 +161,15 @@ class ProductTest extends TestCase
     {
         $category = Category::factory()->create();
         $category->save();
+        $brand = Brand::factory()->create();
+        $brand->save();
         $id = "f7edb97e-ff65-3945-899d-29e41a52f3f5";
         $product = new Product([
             "id" => $id,
             "description" => "Prof. Ottilie Schaefer I",
             "quantity" => 5,
             "price" => 1000.0,
-            "brand" => "Stehr, Reichert and Weber",
+            "brand_id" => $brand->id,
             "category_id" => $category->id
         ]);
 
@@ -171,7 +178,6 @@ class ProductTest extends TestCase
         $product->description = "New description asfasdf";
         $product->quantity = 10;
         $product->price = 2000.0;
-        $product->brand = "New Brandasdfasdf asd";
 
         $this->putJson("/api/products/$id", $product->toArray())
             ->assertOk()
@@ -183,7 +189,7 @@ class ProductTest extends TestCase
                     "description" => "New description asfasdf",
                     "quantity" => 10,
                     "price" => 2000.0,
-                    "brand" => "New Brandasdfasdf asd",
+                    "brand_id" => $brand->id,
                     "category_id" => $category->id
                 ],
             ]);
