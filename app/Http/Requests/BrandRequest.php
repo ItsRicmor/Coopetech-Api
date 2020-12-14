@@ -2,15 +2,12 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
+use App\Traits\ResponseAPI;
 use Illuminate\Contracts\Validation\Validator;
-
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-use App\Traits\ResponseAPI;
-
-class CategoryRequest extends FormRequest
+class BrandRequest extends FormRequest
 {
     // Use ResponseAPI Trait in this repository
     use ResponseAPI;

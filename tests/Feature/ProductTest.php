@@ -178,7 +178,14 @@ class ProductTest extends TestCase
             ->assertJson([
                 "message" => "Producto actualizado",
                 "error" => false,
-                "results" => $product->toArray(),
+                "results" => [
+                    "id" => $id,
+                    "description" => "New description asfasdf",
+                    "quantity" => 10,
+                    "price" => 2000.0,
+                    "brand" => "New Brandasdfasdf asd",
+                    "category_id" => $category->id
+                ],
             ]);
     }
 

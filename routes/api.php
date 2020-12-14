@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BrandsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PurchaseController;
 
@@ -22,5 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::resource( 'categories', CategoryController::class, ['only' => ['index', 'store', 'show', 'update', 'destroy']] );
+Route::resource( 'brands', BrandsController::class, ['only' => ['index', 'store', 'show', 'update', 'destroy']] );
 Route::resource( 'products', ProductController::class, ['only' => ['index', 'store', 'show', 'update', 'destroy']] );
 Route::resource( 'purchases', PurchaseController::class, ['only' => ['index', 'store', 'show', 'update', 'destroy']] );

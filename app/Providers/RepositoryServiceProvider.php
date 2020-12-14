@@ -25,5 +25,10 @@ class RepositoryServiceProvider extends ServiceProvider
             'App\Interfaces\PurchaseRepository',
             'App\Repositories\PurchaseRepositoryImp'
         );
+
+        $this->app->bind(
+            'App\Interfaces\BrandRepository',
+            'App\Repositories\BrandRepositoryImp'
+        );
     }
 }

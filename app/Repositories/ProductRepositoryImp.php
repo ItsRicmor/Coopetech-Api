@@ -45,6 +45,10 @@ class ProductRepositoryImp implements ProductRepository
     {
         DB::beginTransaction();
         try {
+            if(Product::find($request->id)){
+                throw new \Exception("Ya existe un producto con el codigo: $request->id", 409);
+            }
+
             $product = Product::create($request->all());
             $product->load('category');
             DB::commit();
