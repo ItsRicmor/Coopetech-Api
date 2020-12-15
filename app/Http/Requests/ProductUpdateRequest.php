@@ -29,7 +29,7 @@ class ProductUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'description' => 'required|max:255|min:5|string|unique:products,description',
+            'description' => 'required|max:255|min:5|string',
             'quantity' => 'required|numeric|min:0|',
             'price' => 'required|numeric|min:0',
             'brand_id' => 'required|numeric|exists:brands,id',
